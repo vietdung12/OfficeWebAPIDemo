@@ -161,29 +161,29 @@ namespace OfficeWebAPIDemo.Controllers
         }
 
 
-        [Route("GetAllDepartmentNames")]
-        public JsonResult GetAllDepartmentNames()
-        {
-            string query = @"
-                    select DepartmentName from dbo.Department
-                    ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
+        //[Route("GetAllDepartmentNames")]
+        //public JsonResult GetAllDepartmentNames()
+        //{
+        //    string query = @"
+        //            select DepartmentName from dbo.Department
+        //            ";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
+        //    SqlDataReader myReader;
+        //    using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using (SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
 
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
+        //            myReader.Close();
+        //            myCon.Close();
+        //        }
+        //    }
 
-            return new JsonResult(table);
-        }
+        //    return new JsonResult(table);
+        //}
     }
 }
