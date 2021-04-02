@@ -12,6 +12,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using OfficeWebAPIDemo.Service;
 
 namespace OfficeWebAPIDemo
 {
@@ -42,6 +43,9 @@ namespace OfficeWebAPIDemo
                 = new DefaultContractResolver());
 
             services.AddControllers();
+
+            services.AddTransient<IDepartmentService, DepartmentService>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

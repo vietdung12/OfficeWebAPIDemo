@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using OfficeWebAPIDemo.Models;
+using OfficeWebAPIDemo.Service;
 
 namespace OfficeWebAPIDemo.Controllers
 {
@@ -17,121 +18,52 @@ namespace OfficeWebAPIDemo.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly IEmployeeService _employeeService;
         private readonly IWebHostEnvironment _env;
 
-        public EmployeeController(IConfiguration configuration, IWebHostEnvironment env)
+        public EmployeeController(IEmployeeService employeeService, IWebHostEnvironment env)
         {
-            _configuration = configuration;
+            _employeeService = employeeService;
             _env = env;
         }
 
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"EXEC GetAllEmployee";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult(table);
+            var result = _employeeService.Get();
+            if(result == null)
+                return new JsonResult("Eror");
+            return result;
         }
 
 
         [HttpPost]
         public JsonResult Post(Employee emp)
         {
-            string query = @"EXEC InsertEmployee 
-                    '" + emp.EmployeeName + @"'
-                    ,'" + emp.Department + @"'
-                    ,'" + emp.DateOfJoining + @"'
-                    ,'" + emp.PhotoFileName + @"'
-                    ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult("Added Successfully");
+            var result = _employeeService.Insert(emp);
+            if (result == null)
+                return new JsonResult("Eror");
+            return result;
         }
 
 
         [HttpPut]
         public JsonResult Put(Employee emp)
-        {           
-            string query = @"EXEC UpdateEmployee 
-                        " + emp.EmployeeId + @"
-                        ,'" + emp.EmployeeName + @"'
-                        ,'" + emp.Department + @"'
-                        ,'" + emp.DateOfJoining + @"'
-                        ,'" + emp.PhotoFileName + @"'
-                        ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult("Updated Successfully");
+        {
+            var result = _employeeService.Update(emp);
+            if (result == null)
+                return new JsonResult("Eror");
+            return result;
         }
 
 
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
-            string query = @"
-                        EXEC DeleteEmployee " + id + @"
-                        ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult("Deleted Successfully");
+            var result = _employeeService.Delete(id);
+            if (result == null)
+                return new JsonResult("Eror");
+            return result;
         }
 
 

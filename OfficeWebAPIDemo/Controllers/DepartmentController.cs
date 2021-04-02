@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using OfficeWebAPIDemo.Models;
+using OfficeWebAPIDemo.Service;
 
 namespace OfficeWebAPIDemo.Controllers
 {
@@ -15,108 +16,47 @@ namespace OfficeWebAPIDemo.Controllers
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly IDepartmentService _department;
 
-        public DepartmentController(IConfiguration configuration)
+        public DepartmentController(IDepartmentService department)
         {
-            _configuration = configuration;
+            _department = department;
         }
 
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"EXEC GetAllDepartment";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult(table);
+            var result = _department.Get();
+            if(result == null)
+                return new JsonResult("Eror");
+            return result;
         }
 
         [HttpPost]
         public JsonResult Post(Department dep)
-        {          
-            string query = @"EXEC InsertDepartment '" + dep.DepartmentName + @"'";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult("Added Successfully");
+        {
+            var result = _department.Insert(dep);
+            if(result == null)
+                return new JsonResult("Eror");
+            return result;
         }
 
         [HttpPut]
         public JsonResult Put(Department dep)
-        {           
-            string query = @"EXEC UpdateDepartment 
-                        '" + dep.DepartmentName + @"',
-                        " + dep.DepartmentId + @"
-                        ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult("Updated Successfully");
+        {
+            var result = _department.Update(dep);
+            if (result == null)
+                return new JsonResult("Eror");
+            return result;
         }
 
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
-        {          
-            string query = @"
-                        EXEC DeleteDepartment " + id + @"
-                        ";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult("Deleted Successfully");
+        {
+            var result = _department.Delete(id);
+            if (result == null)
+                return new JsonResult("Eror");
+            return result;
         }
     }
 }
