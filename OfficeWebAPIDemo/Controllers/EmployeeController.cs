@@ -29,12 +29,7 @@ namespace OfficeWebAPIDemo.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"
-                    select EmployeeId, EmployeeName, Department,
-                    convert(varchar(10),DateOfJoining,120) as DateOfJoining
-                    ,PhotoFileName
-                    from dbo.Employee
-                    ";
+            string query = @"EXEC GetAllEmployee";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             SqlDataReader myReader;
@@ -58,16 +53,11 @@ namespace OfficeWebAPIDemo.Controllers
         [HttpPost]
         public JsonResult Post(Employee emp)
         {
-            string query = @"
-                    insert into dbo.Employee 
-                    (EmployeeName,Department,DateOfJoining,PhotoFileName)
-                    values 
-                    (
+            string query = @"EXEC InsertEmployee 
                     '" + emp.EmployeeName + @"'
                     ,'" + emp.Department + @"'
                     ,'" + emp.DateOfJoining + @"'
                     ,'" + emp.PhotoFileName + @"'
-                    )
                     ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
@@ -91,14 +81,14 @@ namespace OfficeWebAPIDemo.Controllers
 
         [HttpPut]
         public JsonResult Put(Employee emp)
-        {
-            string query = @"
-                    update dbo.Employee set 
-                    EmployeeName = '" + emp.EmployeeName + @"'
-                    ,Department = '" + emp.Department + @"'
-                    ,DateOfJoining = '" + emp.DateOfJoining + @"'
-                    where EmployeeId = " + emp.EmployeeId + @" 
-                    ";
+        {           
+            string query = @"EXEC UpdateEmployee 
+                        " + emp.EmployeeId + @"
+                        ,'" + emp.EmployeeName + @"'
+                        ,'" + emp.Department + @"'
+                        ,'" + emp.DateOfJoining + @"'
+                        ,'" + emp.PhotoFileName + @"'
+                        ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             SqlDataReader myReader;
@@ -123,9 +113,8 @@ namespace OfficeWebAPIDemo.Controllers
         public JsonResult Delete(int id)
         {
             string query = @"
-                    delete from dbo.Employee
-                    where EmployeeId = " + id + @" 
-                    ";
+                        EXEC DeleteEmployee " + id + @"
+                        ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             SqlDataReader myReader;
