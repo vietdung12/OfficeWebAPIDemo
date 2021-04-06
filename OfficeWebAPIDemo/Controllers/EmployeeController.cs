@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace OfficeWebAPIDemo.Controllers
             _employeeService = employeeService;
             _env = env;
         }
-
+       
         [HttpGet]
         public JsonResult Get()
         {
@@ -35,7 +36,6 @@ namespace OfficeWebAPIDemo.Controllers
                 return new JsonResult("Eror");
             return result;
         }
-
 
         [HttpPost]
         public JsonResult Post(Employee emp)

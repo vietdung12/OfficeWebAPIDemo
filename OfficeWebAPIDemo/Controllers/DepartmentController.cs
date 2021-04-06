@@ -36,7 +36,7 @@ namespace OfficeWebAPIDemo.Controllers
         public JsonResult Post(Department dep)
         {
             var result = _department.Insert(dep);
-            if(result == null)
+            if(result==null)
                 return new JsonResult("Eror");
             return result;
         }
