@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace OfficeWebAPIDemo.Models
+namespace OfficeWebAPIDemo.Models.Entity
 {
     public class User
     {

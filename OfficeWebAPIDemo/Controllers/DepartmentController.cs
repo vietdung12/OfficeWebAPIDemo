@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using OfficeWebAPIDemo.Models;
+using OfficeWebAPIDemo.Models.Entity;
 using OfficeWebAPIDemo.Service;
 
 namespace OfficeWebAPIDemo.Controllers
@@ -24,38 +24,30 @@ namespace OfficeWebAPIDemo.Controllers
         }
 
         [HttpGet]
-        public JsonResult Get()
+        public async Task<JsonResult> Get()
         {
-            var result = _department.Get();
-            if(result == null)
-                return new JsonResult("Eror");
+            var result = await _department.Get();            
             return result;
         }
 
         [HttpPost]
-        public JsonResult Post(Department dep)
-        {
-            var result = _department.Insert(dep);
-            if(result==null)
-                return new JsonResult("Eror");
+        public async Task<JsonResult> Post(Department dep)
+        {            
+            var result = await _department.Insert(dep);           
             return result;
         }
 
         [HttpPut]
-        public JsonResult Put(Department dep)
+        public async Task<JsonResult> Put(Department dep)
         {
-            var result = _department.Update(dep);
-            if (result == null)
-                return new JsonResult("Eror");
+            var result = await _department.Update(dep);            
             return result;
         }
 
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public async Task<JsonResult> Delete(int id)
         {
-            var result = _department.Delete(id);
-            if (result == null)
-                return new JsonResult("Eror");
+            var result = await _department.Delete(id);           
             return result;
         }
     }

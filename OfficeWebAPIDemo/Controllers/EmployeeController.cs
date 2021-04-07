@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using OfficeWebAPIDemo.Models;
+using OfficeWebAPIDemo.Models.Entity;
 using OfficeWebAPIDemo.Service;
 
 namespace OfficeWebAPIDemo.Controllers
@@ -29,40 +29,32 @@ namespace OfficeWebAPIDemo.Controllers
         }
        
         [HttpGet]
-        public JsonResult Get()
+        public async Task<JsonResult> Get()
         {
-            var result = _employeeService.Get();
-            if(result == null)
-                return new JsonResult("Eror");
+            var result = await _employeeService.Get();           
             return result;
         }
 
         [HttpPost]
-        public JsonResult Post(Employee emp)
+        public async Task<JsonResult> Post(Employee emp)
         {
-            var result = _employeeService.Insert(emp);
-            if (result == null)
-                return new JsonResult("Eror");
+            var result = await _employeeService.Insert(emp);           
             return result;
         }
 
 
         [HttpPut]
-        public JsonResult Put(Employee emp)
+        public async Task<JsonResult> Put(Employee emp)
         {
-            var result = _employeeService.Update(emp);
-            if (result == null)
-                return new JsonResult("Eror");
+            var result = await _employeeService.Update(emp);         
             return result;
         }
 
 
         [HttpDelete("{id}")]
-        public JsonResult Delete(int id)
+        public async Task<JsonResult> Delete(int id)
         {
-            var result = _employeeService.Delete(id);
-            if (result == null)
-                return new JsonResult("Eror");
+            var result = await _employeeService.Delete(id);         
             return result;
         }
 

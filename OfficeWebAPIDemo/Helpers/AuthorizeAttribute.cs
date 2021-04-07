@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using OfficeWebAPIDemo.Models;
+using OfficeWebAPIDemo.Models.Entity;
 using System;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
