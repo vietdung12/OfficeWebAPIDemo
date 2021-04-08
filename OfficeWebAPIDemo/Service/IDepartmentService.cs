@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OfficeWebAPIDemo.Models.Entity;
+using OfficeWebAPIDemo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace OfficeWebAPIDemo.Service
 {
     public interface IDepartmentService
     {
-        Task<JsonResult> Get();
-        Task<JsonResult> Insert(Department dep);
-        Task<JsonResult> Update(Department dep);
-        Task<JsonResult> Delete(int id);
+        JsonResult Get();
+        JsonResult Insert(Department dep);
+        JsonResult Update(Department dep);
+        JsonResult Delete(int id);
     }
 }

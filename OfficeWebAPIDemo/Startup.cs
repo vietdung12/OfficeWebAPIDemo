@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -15,7 +14,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using OfficeWebAPIDemo.Helpers;
 using OfficeWebAPIDemo.Service;
-using OfficeWebAPIDemo.Db;
 
 namespace OfficeWebAPIDemo
 {
@@ -31,12 +29,6 @@ namespace OfficeWebAPIDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("EmployeeAppCon"));
-            });
-
-
             //Enable cors
             services.AddCors(c =>
             {
@@ -55,7 +47,7 @@ namespace OfficeWebAPIDemo
 
             services.AddControllers();
 
-            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddScoped<IUserService, UserService>();
         }

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OfficeWebAPIDemo.Helpers;
-using OfficeWebAPIDemo.Models.Entity;
+using OfficeWebAPIDemo.Models;
 using OfficeWebAPIDemo.Models.RequestModel;
 using System;
 using System.Collections.Generic;
